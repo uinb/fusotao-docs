@@ -1,0 +1,62 @@
+name: Gitbook CI
+
+on:
+  push:
+    tags:
+      - prd-*
+
+jobs:
+  build-and-deploy:
+    name: Build And Deploy
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10]
+    env:
+      tag: ${{ github.ref }}
+    steps:
+      - name: Set environment variables
+        run: |
+          echo  "version=${tag##*/}" >> $GITHUB_ENV
+          echo  "target=$(echo ${tag##*/} | cut -d '-' -f1)" >> $GITHUB_ENV
+          echo  "service=docs" >> $GITHUB_ENV
+
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install gitbook
+        run: |
+          npm install -g gitbook-cli
+          npm install -g gitbook-summary
+          gitbook -v
+          gitbook install
+          gitbook build
+      
+      - name: Zip Bundle
+        uses: montudor/action-zip@v0.1.0
+        with:
+          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip _book appspec.yml scripts/
+
+      - name: Mkdir Upload
+        run: |
+          sudo mkdir upload
+          sudo mv nexus-${{ env.service }}-${{ env.version }}.zip upload/
+          u=$USER
+          sudo chown -R $u upload
+          sudo chmod o+r upload
+
+      - name: Deploy to S3
+        uses: jakejarvis/s3-sync-action@master
+        env:
+          AWS_S3_BUCKET: "codedeploy-package"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_REGION: "ap-northeast-1"
+          SOURCE_DIR: "upload"
