@@ -1,2 +1,3 @@
 
-cp -r /tmp/_book/* /data/docs/
+rm -r /tmp/dist
+cp -r /tmp/dist/* /data/wiki/

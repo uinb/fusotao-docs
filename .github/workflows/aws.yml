@@ -1,4 +1,4 @@
-name: Gitbook CI
+name: Fusotao Wiki CI
 
 on:
   push:
@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10]
+        node-version: [12]
     env:
       tag: ${{ github.ref }}
     steps:
@@ -19,7 +19,7 @@ jobs:
         run: |
           echo  "version=${tag##*/}" >> $GITHUB_ENV
           echo  "target=$(echo ${tag##*/} | cut -d '-' -f1)" >> $GITHUB_ENV
-          echo  "service=docs" >> $GITHUB_ENV
+          echo  "service=fuso-docs" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@master
@@ -31,18 +31,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Install gitbook
+      - name: Build
         run: |
-          npm install -g gitbook-cli
-          npm install -g gitbook-summary
-          gitbook -v
-          gitbook install
-          gitbook build
+          npm run docs:build
       
       - name: Zip Bundle
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip _book appspec.yml scripts/
+          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip docs/.vuepress/dist/ appspec.yml scripts/
 
       - name: Mkdir Upload
         run: |
