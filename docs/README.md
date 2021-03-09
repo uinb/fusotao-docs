@@ -4,7 +4,7 @@
 
 Welcome to the Fusotao official wiki! The purpose of this documentation is to help developers understand the basic conceptions of Fusotao and build their own reliable and trustless financial system by interacting with Fusotao. 
 
-Fusotao is a permissionless blockchain based on [Substrate](https://substrate.dev). It contains a highly customized runtime difference from polkadot, though they both depends on some pallets such as `balances` and `grandpa`. The main purpose of Fusotao is to seperate the role of banks from the centralized exchanges which shouldn't combine into one, rather than building another general cross-chain system or a dex over polkadot. 
+Fusotao is a permissionless blockchain based on [Substrate](https://substrate.dev). It contains a highly customized runtime difference from polkadot, though they both depend on some pallets such as `balances` and `grandpa`. The main purpose of Fusotao is to seperate the role of banks from the centralized exchanges which shouldn't combine into one, rather than building another general cross-chain system or a dex over polkadot. 
 
 ## Building a centralized exchange from scratch
 

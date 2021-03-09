@@ -6,8 +6,31 @@ In the blockchain world, PoS often means Proof of Staking which is a type of con
 
 Generally speaking, PoS is the primary mining strategy in Fusotao, anyone compeleted the PoS will get reward from the network. The polynomial curve is shown below:
 
+```
+curve(0) = 800004.525
+curve(t) = [t^2, t^1, t^0]•[924.203, 6007.320, 2010241.525]¬, t=[1..=50]
+where t represents the nth term of the council
+the members of the 0th term are indicated by fuso foundation
+```
 
+TODO
 
 ## Council
 
 TODO
+
+## Inspector
+
+The inspector is a off-chain node authorized by the council. The major duty of inspectors is verifing foreign-chains' transactions such as bitcoin and then report to fusotao.
+
+## Receipt
+
+TODO
+
+## Token
+
+TODO
+
+## Self-Destruction
+
+The self-destruction in Fusotao is not just burning TAOs. After the 51th term over, if the activities of Fusotao become lower and lower(measured by the blocks' average weight), a referendum about self-destruction will be automatically issued.
