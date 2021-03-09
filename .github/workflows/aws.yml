@@ -35,11 +35,15 @@ jobs:
         run: |
           npm install
           npm run docs:build
+
+      - name: Move dist
+        run: |
+          sudo mv docs/.vuepress/dist ./
       
       - name: Zip Bundle
         uses: montudor/action-zip@v0.1.0
         with:
-          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip docs/.vuepress/dist/ appspec.yml scripts/
+          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip dist/ appspec.yml scripts/
 
       - name: Mkdir Upload
         run: |
