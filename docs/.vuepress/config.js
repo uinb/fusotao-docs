@@ -13,11 +13,11 @@ module.exports = {
   themeConfig: {
     logo: "/logo.svg",
     nav: [
-      { text: "Website", link: "https://fusotao.org" },
-      { text: "Docs", link: "/" },
+      { text: "Home", link: "/" },
+      { text: "Fusotao", link: "https://fusotao.org" },
       { text: "Github", link: "https://github.com/uinb/fusotao" },
     ],
-    sidebar: ["/", "/todo"],
+    sidebar: ["/", "conceptions-and-architectures", "interacting-with-fusotao", "participating-the-mainnet"],
     sidebarDepth: 3,
     smoothScroll: true,
     displayAllHeaders:true
