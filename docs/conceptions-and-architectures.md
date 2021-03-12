@@ -14,7 +14,7 @@ where t represents the nth term of the council
 
 ## Council
 
-The council is consists of super nodes elected by referendum. Applicants can invoke the RPC during registration peroid to apply a seat of the council. All TAO holders can vote to a candidate and cause the assets locked until the end of current election. 
+The council consists of super nodes elected by referendum. Applicants can invoke the RPC during registration peroid to apply a seat of the council. All TAO holders can vote to a candidate and cause the assets locked until the end of current election. 
 
 ## Inspector
 
