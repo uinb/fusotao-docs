@@ -10,18 +10,15 @@ Generally speaking, PoS is the primary mining strategy in Fusotao, anyone compel
 curve(0) = 800004.525
 curve(t) = [t^2, t^1, t^0]•[924.203, 6007.320, 2010241.525]¬, t=[1..=50]
 where t represents the nth term of the council
-the members of the 0th term are indicated by fuso foundation
 ```
-
-TODO
 
 ## Council
 
-TODO
+The council is consists of super nodes elected by referendum. Applicants can invoke the RPC during registration peroid to apply a seat of the council. All TAO holders can vote to a candidate and cause the assets locked until the end of current election. 
 
 ## Inspector
 
-The inspector is a off-chain node authorized by the council. The major duty of inspectors is verifing foreign-chains' transactions such as bitcoin and then report to fusotao.
+The inspector is a pre-setted oracle to verify foreign-chains' transactions by SPV.
 
 ## Receipt
 
