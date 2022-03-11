@@ -42,4 +42,4 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_REGION: "ap-southeast-1"
           SOURCE_DIR: "dist"
-          TARGET_DIR: "wiki"
+          DEST_DIR: "wiki"
