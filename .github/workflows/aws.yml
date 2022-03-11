@@ -2,8 +2,7 @@ name: Fusotao Wiki CI
 
 on:
   push:
-    tags:
-      - prd-*
+    tags: *
 
 jobs:
   build-and-deploy:
@@ -15,12 +14,6 @@ jobs:
     env:
       tag: ${{ github.ref }}
     steps:
-      - name: Set environment variables
-        run: |
-          echo  "version=${tag##*/}" >> $GITHUB_ENV
-          echo  "target=$(echo ${tag##*/} | cut -d '-' -f1)" >> $GITHUB_ENV
-          echo  "service=fuso-docs" >> $GITHUB_ENV
-
       - name: Checkout
         uses: actions/checkout@master
         with:
@@ -39,25 +32,13 @@ jobs:
       - name: Move dist
         run: |
           sudo mv docs/.vuepress/dist ./
-      
-      - name: Zip Bundle
-        uses: montudor/action-zip@v0.1.0
-        with:
-          args: zip -r nexus-${{ env.service }}-${{ env.version }}.zip dist/ appspec.yml scripts/
-
-      - name: Mkdir Upload
-        run: |
-          sudo mkdir upload
-          sudo mv nexus-${{ env.service }}-${{ env.version }}.zip upload/
-          u=$USER
-          sudo chown -R $u upload
-          sudo chmod o+r upload
 
       - name: Deploy to S3
         uses: jakejarvis/s3-sync-action@master
         env:
-          AWS_S3_BUCKET: "codedeploy-package"
+          AWS_S3_BUCKET: "fusotao-website"
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
-          AWS_REGION: "ap-northeast-1"
-          SOURCE_DIR: "upload"
+          AWS_REGION: "ap-southeast-1"
+          SOURCE_DIR: "dist"
+          TARGET_DIR: "wiki"

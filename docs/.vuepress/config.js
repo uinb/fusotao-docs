@@ -10,14 +10,15 @@ module.exports = {
       },
     ],
   ],
+  base: "/wiki/",
   themeConfig: {
     logo: "/logo.svg",
     nav: [
       { text: "Home", link: "/" },
-      { text: "Fusotao", link: "https://fusotao.org" },
-      { text: "Github", link: "https://github.com/uinb/fusotao" },
+      { text: "Fusotao", link: "https://www.fusotao.org" },
+      { text: "Github", link: "https://github.com/uinb" },
     ],
-    sidebar: ["/", "conceptions-and-architectures", "interacting-with-fusotao", "participating-the-mainnet"],
+    sidebar: ["/", "substrate-network", "core-features"],
     sidebarDepth: 3,
     smoothScroll: true,
     displayAllHeaders:true
