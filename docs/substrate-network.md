@@ -18,5 +18,7 @@ fuso --chain octopus-testnet.json --validator
 
 To validate the blocks of Fusotao, the validators must stake some $OCT tokens and register themselves on [Octopus Network Appchain Dashboard](https://oct.network/appchains). For more informations, please refer to the [Validator Guides.](https://docs.oct.network/maintain/validator-guide.html)
 
-Once starting validation, the validators and their delegators can earn the Fusotao token $TAO. The total amount of $TAO to reward to validators of each era(abount 1 day) is *4109*. For a conclusion, the security of Fusotao Protocol is leased from the $OCT holders, that is what the LPoS(Leased Proof of Stake) means.
+After launched, the validators and their delegators can earn the Fusotao token $TAO. The total amount of $TAO to reward to validators of each era(abount 1 day) is *4109*.
+
+For a conclusion, the security of Fusotao Protocol is leased from the $OCT holders, that is what the LPoS(Leased Proof of Stake) means.
 
