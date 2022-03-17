@@ -1,0 +1,26 @@
+.theme-container {
+  font-family: "Poppins-Regular";
+  a{
+    text-decoration: none;
+    background: linear-gradient(90deg,#dc2227,#84239c);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  a:hover{
+    background: linear-gradient(90deg,#dc2227,#84239c) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+  }
+  a.sidebar-link.active {
+    background: linear-gradient(90deg,#dc2227,#84239c) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+    border-left-color: #dc2227;
+  }
+  .nav-item > a:not(.external).router-link-active {
+    background: linear-gradient(90deg,#dc2227,#84239c) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+    border-bottom-color: #dc2227;
+  }
+}
