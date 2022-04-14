@@ -1,4 +1,4 @@
-# Core Features
+# Conceptions
 
 If there is only one single word to summarize what Fusotao Protocol is, it is order matching verification. Fusotao is a verification protocol for order-book based matching systems, unlike trading on any other DEXs, the trading behaviors are never happened on-chain. Instead, the trading commands can be executed anywhere only if they are verifiable. Thus, users can trade their coins without bearing high latency and huge gas fees.
 
@@ -14,13 +14,15 @@ A valid proof submitted by provers will cause new $TAO generating by the protoco
 
 ## Staking
 
-Fusotao is an open network without any permissions, anyone can register as a prover by signing an on-chain extrinsic `verifier#register`. Before a registered prover can submit proofs, enough $TAO must be staked for it. Currently, in the [Fusotao Vodka Testnet](https://app.vodka.fusotao.org), it requires 80,000 $TAO to activate a prover. Before that, a dex will be marked as `Inactive` state.
+Fusotao is an open network without any permissions, anyone can register as a prover by signing an on-chain extrinsic `verifier#register`. Before a registered prover can submit proofs, enough $TAO must be staked for it. Currently, in the [Fusotao Brandy Testnet](https://app.brandy.fusotao.org), it requires 80,000 $TAO to activate a prover. Before that, a dex will be marked as `Inactive` state.
 
 As returns, the $TAO holders can earn transaction fees from the DEX they staking for. In the Vodka Testnet, the minimal staking amount is 100 $TAO.
 
 As a serial system, the matching system is highly sensitive in the incoming events. Any unexpected mistakes will cause the system interrupted. That's why the proving progress(PPI, Proving Performance Index) is very important to Fusotao Protocol. Every event(ask, bid or cancel) will change the inner global state of the prover and should be submitted to the verifier to validate, if the proving progress of a prover falls behind the current block too much, it will be marked as `Evicted`. Once evicted, the DEX can't submit proofs anymore, nor accept staking. Of course, the delegators can deposit their $TAO from it.
 
 
-## Bridging (TODO)
+## Bridging
 
-The Octopus Network provides a trustless bridge connected to NEAR Protocol for each appchain.
+Since Fusotao Protocol aims to be a trustless DeFi infrastructure, security is our top priority. Octopus Network provides a light-client based bridge connecting to NEAR Protocol for each appchain which makes token bridging independent from oracles. In another word, migrating tokens from NEAR to Fusotao or reverse doesn't rely on human trust because both NEAR and Fusotao will validate whether the bridging events happened or not by saving all the finalized blocks of each other.
+
+Try [NEAR <> Fusotao](https://testnet.oct.network/bridge/near/fusotao) on testnet.
