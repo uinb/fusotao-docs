@@ -2,7 +2,9 @@
 
 ## General API Information
 
-- The base endpoints are two: **TEST:** **```https://test-api.fxdx.finance```** **PRD:** **```https://prd-api.fxdx.finance```**
+- The base endpoints are two: 
+   - **TEST:** **```https://test-api.fxdx.finance```** 
+   - **PRD:** **```https://prd-api.fxdx.finance```**
 - All endpoints return either JSON object or array.
 - Data is returned in ascending order. Oldest first, newest last.
 
@@ -102,7 +104,8 @@ Method /maker/xxxx
 Method /api/xxxx
 ```
 
-#### SIGNED (TRADE and USER_DATA) Endpoint security
+### SIGNED Endpoint security
+TRADE and USER_DATA
 - The api key negotiation is divided into three steps.
 - SIGNED endpoints require an additional parameter, signature, to be sent in **`X-Address`**, **`X-Signature`** ,**`X-Timestamp`** headers.
 - Endpoints use **```HMAC SHA256```** signatures. The ```HMAC SHA256 ```signature is a keyed ```HMAC SHA256``` operation. Use your secretKey as the key and totalParams as the value for the HMAC operation.
