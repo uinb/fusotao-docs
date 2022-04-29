@@ -1,36 +1,4 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Public Rest API for FXDX (2022-04-28)](#public-rest-api-for-fxdx-2022-04-28)
-  - [General API Information](#general-api-information)
-    - [HTTP Return Codes](#http-return-codes)
-  - [General Info on Limits](#general-info-on-limits)
-    - [IP Limits](#ip-limits)
-  - [Endpoint security](#endpoint-security)
-    - [**Role**](#role)
-      - [SIGNED (TRADE and USER_DATA) Endpoint security](#signed-trade-and-user_data-endpoint-security)
-        - [Get nonce from the server.](#get-nonce-from-the-server)
-        - [Get Token from the server.](#get-token-from-the-server)
-        - [How to sign your request.](#how-to-sign-your-request)
-  - [Public API Endpoints](#public-api-endpoints)
-    - [Terminology](#terminology)
-      - [ENUM definitions](#enum-definitions)
-        - [**Order status(status)**](#order-statusstatus)
-        - [**Order type(type)**](#order-typetype)
-        - [**Kline scale**](#kline-scale)
-  - [Market Data endpoints](#market-data-endpoints)
-    - [Order book](#order-book)
-    - [Kline/Candlestick data](#klinecandlestick-data)
-    - [Query symbols](#query-symbols)
-  - [Account endpoints](#account-endpoints)
-    - [New order(TRADE)](#new-ordertrade)
-    - [Cancel order(TRADE)](#cancel-ordertrade)
-    - [Query order(USER_DATA)](#query-orderuser_data)
-    - [Query order with page(USER_DATA)](#query-order-with-pageuser_data)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-# Public Rest API for FXDX (2022-04-28)
+# Public Rest API
 
 ## General API Information
 
