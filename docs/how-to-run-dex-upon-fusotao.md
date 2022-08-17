@@ -169,7 +169,7 @@ Import the menomnic phrase into Polkadotjs wallet, then go to [Fusotao Mainnet R
 
 In the page, select `verifier`, `register`, and input the dex's name you like, then submit the transaction.
 
-![](/register-dex.png)
+![](/wiki/register-dex.png)
 
 The final step of registering is make PR to our [Github Repo](https://github.com/uinb/fusotao-registry) where to save dex's name, logo and url:
 
@@ -192,7 +192,7 @@ Different from CEXs, the trading platforms backed by Fusotao couldn't hold users
 
 To test the procedures, you can submit the transactions on the testnet endpoint.
 
-![](/authorize-dex.png)
+![](/wiki/authorize-dex.png)
 
 In the page, select `verifier`, `authorize`, input the target dex's address and token id and amount, then submit the transaction.
 
