@@ -18,7 +18,7 @@ module.exports = {
       { text: "Fusotao", link: "https://www.fusotao.org" },
       { text: "Github", link: "https://github.com/uinb" },
     ],
-    sidebar: ["/", "substrate-network", "core-features","rest-api"],
+    sidebar: ["/", "substrate-network", "core-features","how-to-run-dex-upon-fusotao"],
     sidebarDepth: 3,
     smoothScroll: true,
     displayAllHeaders:true
