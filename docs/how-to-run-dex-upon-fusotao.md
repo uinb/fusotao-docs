@@ -1,11 +1,11 @@
 # How To Run a Dex Upon Fusotao
 
-Fusotao Protocol is a verification protocol. This documents will guide you to develop a orderbook based dex upon Fusotao.
+This chapter will guide you to develop a orderbook based dex upon Fusotao.
 
 
 ## Compile
 
-[Galois](https://github.com/uinb/galois) is a standard matching engine which can be used either as a Fusotao backed dex or a plain cex. This document will only introduce how to use Galois as the Fusotao proving client only.
+[Galois](https://github.com/uinb/galois) is a standard matching engine which can be used either as a Fusotao backed dex or a plain cex. This document will introduce how to use Galois as the Fusotao proving client only.
 
 First, download the recent release version from [Github Release](https:/github.com/uinb/galois/releases). Galois is writen in rust, to compile it, you may need to install [Rustup](https://rustup.rs/) and related toolchain.
 
@@ -67,7 +67,7 @@ level = "error"
 
 ## Initialize Dependencies
 
-Galois depends mysql to record all incoming commands including ask/bid/cancel, and trading pair management commands as well. There are 3 groups of mysql table you must create before launching Galois:
+Galois depends on mysql to record all incoming commands including ask/bid/cancel, and trading pair management commands as well. There are 3 groups of mysql table you must create before launching Galois:
 
 - t_sequence (the incoming events, VERY IMPORTANT, CAN NOT BE DELETED OR DROPED)
 - t_proof (where to store the proofs, can be re-generated after reboot Galois)
@@ -135,12 +135,12 @@ There are 2 steps to list a new pair:
 
 to create a new table.
 
-*NOTICE*: the base and quote are not inner codes but legal token code on Fusotao chain, e.g. 
+*NOTICE*: the base and quote are not inner codes but legal token code on Fusotao chain, and every token code must refer to a valid token contract deployed NEAR. E.g. 
 
 0 -> $TAO (fusotao-token.near)    
 1 -> $USDT (dac17f958d2ee523a2206206994597c13d831ec7.factory.bridge.near).
 
-All the token codes must refer to a valid token contract deployed NEAR. Before the token can be traded on Fusotao, it must be registered in the trustless [Octopus Bridge](https://mainnet.oct.network/bridge/near/fusotao/). The registering itself is also permissionless, but must be executed by the Ocotopus Network operator mannually at present. 
+Before the token can be traded on Fusotao, it must be registered in the trustless [Octopus Bridge](https://mainnet.oct.network/bridge/near/fusotao/). The registering itself is also permissionless, but must be executed by the Ocotopus Network operator mannually at present. We have suggested the Octopus Core team to post the config on Github.
 
 2. Insert a command into the `t_sequence`
 
