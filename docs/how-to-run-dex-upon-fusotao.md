@@ -171,7 +171,7 @@ In the page, select `verifier`, `register`, and input the dex's name you like, t
 
 ![](/wiki/register-dex.png)
 
-The final step of registering is make PR to our [Github Repo](https://github.com/uinb/fusotao-registry) where to save dex's name, logo and url:
+The final step of registering a DEX is to make a PR to our [Github Repo](https://github.com/uinb/fusotao-registry) where to save dex's name, logo and url:
 
 ```
 {
