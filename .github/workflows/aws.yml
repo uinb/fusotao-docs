@@ -1,4 +1,4 @@
-name: Fusotao Wiki CI
+name: Fusotao Docs CI
 
 on:
   push:
