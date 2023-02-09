@@ -1,5 +1,8 @@
-# Getting Started
+# Introduction
 
-Welcome to the Fusotao official wiki! The purpose of this documentation is to help uers to understand the basic conceptions of Fusotao. 
+Welcome to the Fusotao documentation! The purpose of this documentation is to help uers to understand the conceptions of Fusotao. 
 
-Fusotao is a permissionless blockchain based on [Substrate](https://substrate.dev) and hosted on [Octopus Network](https://oct.network). It contains a highly customized runtime focused on verifying off-chain matching system. The main purpose of Fusotao is to seperate the role of banks from the centralized exchanges which are shouldn't combined into one, rather than building another general purpose blockchain or a dex on a specific blockchain. 
+## What is Fusotao
+
+Fusotao is a decentralized infrastructure designed primarily for verification of a matching system to ensure the safety of user assets during trading on the orderbook based exchanges. By combining the power of PoS consensus and a robust matching system verification process, Fusotao provides a secure and efficient solution for asset management, free from the risks and limitations of centralized exchanges. This document provides a comprehensive overview of the Fusotao project, including its design intent, technical details, and usage instructions. Whether you're a user looking to manage your assets or a developer looking to build on the Fusotao platform, this document will provide you with all the information you need to get started.
+

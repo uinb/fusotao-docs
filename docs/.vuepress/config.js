@@ -10,7 +10,7 @@ module.exports = {
       },
     ],
   ],
-  base: "/wiki/",
+  base: "/",
   themeConfig: {
     logo: "/logo.svg",
     nav: [
@@ -18,9 +18,9 @@ module.exports = {
       { text: "Fusotao", link: "https://www.fusotao.org" },
       { text: "Github", link: "https://github.com/uinb" },
     ],
-    sidebar: ["/", "substrate-network", "core-features","how-to-run-dex-upon-fusotao"],
+    sidebar: ["/", "architecture", "development", "tokens"],
     sidebarDepth: 3,
     smoothScroll: true,
-    displayAllHeaders:true
+    displayAllHeaders: false
   },
 };

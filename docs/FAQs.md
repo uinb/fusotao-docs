@@ -1,28 +1,25 @@
 # Fusotao FAQs
 
-## Technology
 
-##### 1.What is Fusotao Protocol?
+### What is Fusotao Protocol?
 
-Fusotao Protocol is a verification protocol for order-book based matching systems, using the paradigm of “execute off-chain, verify on-chain”. Founders can build their own DEXs backed by Fusotao. Communities can earn rewards by trading on the DEXs or directly staking tokens for the DEXs backed by Fusotao Protocol to earn transaction fees from them. The FXDX to be launched, will be the first order-book based DEX backed by Fusotao Protocol, as well as the first DEX in the whole NEAR ecosystem. 
+Fusotao Protocol is a decentralized infrastructure powered by Substrate for orderbook based matching systems, using the paradigm of “execute off-chain, verify on-chain”. Anyone can build their own DEXs upon Fusotao by simply integrating with the open-source matching engine and proving client #[Galois](https://github.com/uinb/galois) without permissions. 
 
-##### 2.Why do we build Fusotao Protocol?
-
+### Why do we build Fusotao Protocol?
 
 All the cryptocurrency holders need to trade their assets on some platforms. The Fusotao team realized that trading on CEXs due to hack cases and DEXs due to high transaction fees and low efficiency and user-friendliness is risky. Trading and investing in crypto carries risk regardless of which type of exchange one uses. Centralized exchanges (CEX) present risks such as hacks and foregoing asset custody, while decentralized exchanges (DEX) present the challenge of high transaction fees and low efficiency. Fusotao intends to disrupt this by providing a user-friendly order-book based DEX with zero-cost gas, low latency, and high security.
 
-##### 3.What are the components or technical specs of the project? What will the final deliverables look like?
+### What are the components or technical specs of the project? What will the final deliverables look like?
 
+Fusotao Protocol is composed of two core components: A blockchain acts as the verifier and an off-chain matching system acts as the prover. Currently, we have built the blockchain based on the substrate as a standalone blockchain. by cooperating with the Octopus Network we can bridge to NEAR and other substrate-based application chains. By trading on a Fusotao integrated trading platform, users do not need to transfer coins to the platform, instead, they just need to authorize coins. After the authorization is completed, only the state is changed from “free” to “reserved” state, and coins are still kept in your wallet. The“reserved” status of coins will not change until the off-chain prover outputs proofs. The off-chain prover is a standard matching engine just like other CEX matching systems with an extra proving engine. The matcher will update the states within it immediately but the assets won't be changed until the proofs are verified.
 
-Fusotao Protocol is composed of two core components: A blockchain acts as the verifier and an off-chain matching system acts as the prover. Currently, we have built the blockchain based on the substrate as a standalone blockchain, by cooperating with the Octopus Network we can bridge to NEAR and other substrate-based application chains. By trading on a Fusotao integrated trading platform, users do not need to transfer coins to the platform, instead, they just need to authorize coins. After the authorization is completed, only the state is changed from “free” to “reserved” state, and coins are still kept in your wallet. The“reserved” status of coins will not change until the off-chain prover outputs proofs. The off-chain prover is a standard matching engine just like other CEX matching systems with an extra proving engine. The matcher will update the states within it immediately but the assets won't be changed until the proofs are verified.
-
-##### 4.Which components of the project will be open source?
+### Which components of the project will be open source?
 
 All of our components are fully open-source. The matching system is offered to founders who would like to build a reliable DEX.
 
 To have a better understanding, please review our Technical Greenbook: [Fusotao Technical Greenbook](https://www.fusotao.org/fusotao-greenbook.pdf).
 
-##### 5.Competitiveness and advantages
+### Competitiveness and advantages
 
 We know that many public blockchain ecosystems have their own order-book DEXs. If we are building a DEX, there will be many competitors in any blockchain. However, we are a decentralized infrastructure that can provide support for order book DEXs. Any founder can develop his own order book DEX based on our matching and verification protocol. We don't find any team doing similar things with us at present.
 
@@ -45,7 +42,7 @@ What is the difference between the DEX on Fusotao and the existing DEXs?
 - Assets are always at the user's control
 - The Community can share transaction fees by staking TAO for the DEXs backed by Fusotao
 
-##### **6. What’s the difference between Fusotao and zk-SNARKs?**
+### **6. What’s the difference between Fusotao and zk-SNARKs?**
 
 zk-SNARKs is a common solution for the Polynomial problem. Generally speaking, zk-SNARKs can be used for verifying something without recalculating it. there are 3 reasons we need to consider using zk-SNARKs:
 
@@ -59,31 +56,31 @@ zk-SNARKs is a common solution for the Polynomial problem. Generally speaking, z
 
 ![img](https://miro.medium.com/max/840/0*rzcqC9wlnFcAzQsM)
 
-##### **7. How can the DEXs backed by Fusotao work with 0 gas?**
+### **7. How can the DEXs backed by Fusotao work with 0 gas?**
 
 The orders from the users are sent directly to the off-chain matcher and executed off-chain,so the users need not to pay the gas fee. The verifier on-chain is responsible for verifying the correctness of the status modification. For the DEXs or the matchers, they should pay the gas since it is the invoker, but if the proofs they submit are verified, the gas would be returned by the validators. In another word, only the invalid proofs will be charged.
 
-##### **8. How does Fusotao ensure security?**
+### **8. How does Fusotao ensure security?**
 
 Fusotao uses the paradigm of “execute off-chain, verify on-chain”. We have a centralized service off-chain to store the order book and match the trading order. After the off-chain matching, the protocol will verify it on-chain. That means the assets are always in the user's control and always on-chain. In addition, Fusotao will collaborate with Octopus Network to ensure blockchain security and enable Fusotao’s interoperability with NEAR or any IBC-enabled blockchain. 
 
-##### **9. Which chains will Fusotao function with?**
+### **9. Which chains will Fusotao function with?**
 
 Our substrate-based application chain validated by Octopus network.Fusotao is an appchain that joins Octopus Network and is part of the Near ecosystem, as tokens on both NEAR and Octopus Chain are first online to order-book based DEXs (FXDX) on Fusotao.Fusotao is a side-chain connected with NEAR mainnet through a light-client bridge which is different from oracle.
 
-##### **10. Does it hop over to Aurora and have the EVM compatibility?**
+### **10. Does it hop over to Aurora and have the EVM compatibility?**
 
 EVM no, actually the bridge is provided by Octopus network, as far as I know, NEAR is the first choice.
 
-##### **11. Which wallet will be used for Fusotao in testnet and mainnet?**
+### **11. Which wallet will be used for Fusotao in testnet and mainnet?**
 
 Polkadot wallet and Fusotao wallet.Because substrate moves fast, we must keep up with the technical progress to promise the runtime compatible with Polkadot wallet
 
-##### **12.What’s the long-term vision?**
+### **12.What’s the long-term vision?**
 
 Fusotao Protocol is a decentralized infrastructure for order-book based DEX. Our immediate mission is to support a number of founders to build their own order-book based DEXs on our blockchain by using our matching engine and verification protocol. In the near future, Fusotao aspires to be a core component in driving the development of DeFi using its high performance and high-security features.
 
-##### 13.Roadmap
+### 13.Roadmap
 
 **Done**:
 
@@ -106,9 +103,8 @@ Fusotao Protocol is a decentralized infrastructure for order-book based DEX. Our
 2. Mainnet launch, a new journey
 3. Community governance by staking for more DEX. Make Fusotao a safer, more general, more decentralized and more open financial infrastructure.
 
-## **TOKENOMICS**
 
-##### **1. Token distribution**
+##### **Token distribution**
 
 The total amount of TAO tokens is 100 million. 63% of TAO tokens will be allocated to community members including trading rewards (Proof-of-Trading,48% of the total token supply), validator rewards (Proof-of-Validator,7.5% of the total token supply), TAO staking rewards (Proof-of-Staking, 7.5% of the total token supply).
 
@@ -118,11 +114,11 @@ Among the rest 37% of total token supply, 8% will be distributed to the FusotaoT
 
 ![img](https://miro.medium.com/max/840/1*6mASvb7tSieyK5g19ws0kw.png)
 
-##### 2. TAO token Usage Scenarios
+### TAO token Usage Scenarios
 
 As the native utility token of the Fusotao Protocol, TAO not only represents the rights of the holder, but also has actual value. TAO can be used in the following scenarios.
 
-###### 1. Governance Token
+### Governance Token
 
 Fusotao is a decentralized infrastructure with deep participation and leadership of the community. TAO is the only certificate of community participation in governance.
 
@@ -130,19 +126,18 @@ Fusotao is a decentralized infrastructure with deep participation and leadership
 - All TAO holders can vote on proposals, and the proposal with a majority of votes will be adopted and implemented by the development team.
 - If the project team plans to build a new DEX on the Fusotao Protocol, it needs to reach the minimum number of votes before it goes online.
 
-###### 2. Gas Fee
+### Gas Fee
 
 TAO tokens can be used to pay gas fees on the Fusotao Protocol application Chain.
 
-###### **3. Stake to Earn Transaction Fees**
+#### **Stake to Earn Transaction Fees**
 
 The Fusotao protocol is a decentralized blockchain network. Community users can directly share transaction fees through staking TAO Tokens for the DEXs backed by Fusotao Protocol.
 
-###### **4. Trading Rewards**
+### **Trading Rewards**
 
 Users who hold TAO tokens in the on-chain wallet and trade on the DEXs backed by the Fusotao Protocol can earn rewards through PoT.
 
-## COMMUNITY
 
 ##### 1. How can I join the Fusotao community?
 
