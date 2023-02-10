@@ -188,7 +188,7 @@ The registry procedure is an on-chain transaction. To submit the extrinsic, you 
 Then, import the menomnic phrase into Polkadotjs or Avatar wallet and submit the extrinsic on [Fusotao Mainnet RPC Endpoint](https://polkadot.js.org/apps/?rpc=wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/explorer)(Click the left upper corner to switch to your local node if you are testing).
 In the page, select `verifier`, `register`, and input the dex's name you like, then click 'Submit Extrinsic'.
 
-![](/wiki/register-dex.png)
+![](/register-dex.png)
 The final step of registering a DEX is to make a PR to our [Github Repo](https://github.com/uinb/fusotao-registry) where to save dex's name, logo and url:
 
 ```
