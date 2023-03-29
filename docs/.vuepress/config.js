@@ -18,7 +18,7 @@ module.exports = {
       { text: "Fusotao", link: "https://www.fusotao.org" },
       { text: "Github", link: "https://github.com/uinb" },
     ],
-    sidebar: ["/", "architecture", "development", "tokens"],
+    sidebar: ["/", "architecture", "development", "tokens", 'tutorial'],
     sidebarDepth: 3,
     smoothScroll: true,
     displayAllHeaders: false
