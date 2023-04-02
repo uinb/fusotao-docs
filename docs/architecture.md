@@ -14,21 +14,28 @@ The following figure indicates the interaction between Fusotao components and ot
 - [Octopus Anchor](https://github.com/octopus-network/anchor-contract)
 - [Avatar Wallet](https://chrome.google.com/webstore/detail/avatar-wallet/ckfhnogibicdkfkijinnacpmmobbhbjk)
 - [Chain Bridge](https://github.com/uinb/ChainBridge)
+- [Web Portal](https://portal.fusotao.org)
+- [Explorer](https://explorer.mainnet.oct.network/fusotao)
+- [Polkadotjs for Fusotao](https://polkadot.js.org/apps/?rpc=wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/explorer)
 
-## Node
+## Fusotao Node
 
-The Fusotao chain consists of a set of Substrate pallets which are responsible for:
+The Fusotao chain node is composed of a runtime layer and a container layer. The runtime layer is a WASM binary contains all the core logic of the chain and execute by the container layer for reaching a consensus state cross the whole network. The container layer includes P2P communication, storage, consensus algorithm and RPC service. Usually, a substrate-based blockchain only focuses on the runtime development while Fusotao Protocol extends them both.
+
+The Fusotao runtime layer consists of a set of pallets which are responsible for:
 
 - Producing and finalizing blocks (Parity: BABE/GRANDPA)
 - Generating bridging proofs (Parity: BEEFY/MMR)
 - Managing native token and gas (Parity: Balance/TransactionPayment)
-- Managing validators (Octopus: OctopusAppchain/OctopusBridge)
+- Managing validators and transfering between Fusotao and NEAR (Octopus: OctopusAppchain/OctopusBridge)
 - Verifying order matching proofs (Fusotao: FusoVerifier)
 - Managing foreign reservable tokens (Fusotao: FusoToken)
 - Enable interoperability with other EVM-compatible chains (Fusotao: FusoAgent)
+- Managing the brokers and markets (Fusotao: FusoMarket)
 - Bridging to EVM-compatible chains (ChainSafe: ChainBridge)
 
-Additionally, the Fusotao runtime includes an off-chain worker that pulls events occurring on the NEAR network to mint NEP-141 tokens.
+Additionally, Fusotao protocol extends the Substrate container layer to support Proof of Order Relay which enables everyone to join the network as a broker without permissions and even building a customized webpage in front of the node, or embedding the open trading APIs into any projects.
+
 
 ## Galois(Prover)
 
@@ -45,4 +52,12 @@ The Avatar Wallet is compatible with both NEAR and Fusotao and includes the buil
 
 ## Chain Bridge
 
-The Chain Bridge includes a relayer that facilitates the transfer of block messages between the Ethereum Virtual Machine (EVM) and Fusotao, as well as a solidity contract that is security audited for managing ERC20 tokens. Furthermore, the integration with the Fusotao Agent feature grants the Chain Bridge the ability of interoperability.
+The Chain Bridge includes a relayer that facilitates the transfer of block messages between the Ethereum Virtual Machine (EVM) and Fusotao, as well as a solidity contract that is security audited for managing ERC20 and BEP20 tokens. Furthermore, the integration with the Fusotao Agent feature grants the Chain Bridge the ability of interoperability.
+
+## Web Portal
+
+The Web Portal is a decentralized webapp for interacting with Fusotao, mainly includes staking, claiming rewards, bridging, token transfering and etc.
+
+## Explorer
+
+The Fusotao explorer is powered by the Octopus team.

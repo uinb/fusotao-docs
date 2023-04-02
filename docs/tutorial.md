@@ -1,4 +1,4 @@
-# Tutorial
+# Tutorials(legacy)
 
 ## Authorize Asset to Fxdx
 If you want to trade on Fxdx, there are three ways to transfer your assets
