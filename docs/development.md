@@ -69,18 +69,21 @@ This section will provide a detailed introduction to the second type of API. For
 
 ### Codec 
 
-There are only 2 kinds of data format in the **Open Trading API**:
-
-- Account: [ss58 format](https://ss58.org/)
-- Others: [parity scale codec](https://github.com/paritytech/parity-scale-codec) in hex format with "0x" prefix
+All types in the **Open Trading API** are [parity-scale-codec](https://github.com/paritytech/parity-scale-codec) and represented in hex format with "0x" prefix, except the `AccountId`. The `AccountId` must be represented in [ss58 format](https://ss58.org/) when using sr25519(default Fusotao account type), or hex format when using secp256k1 pubkey(compatible with Ethereum).
 
 Below are some examples:
 
 - user_account(fuso address): `5CGGzMEAVRwvBAr15c9c6c9N3LNKY3u3DmtJRpJHsWgSz4ii`
+- user_account(eth/bsc address): `0x3bAD6205d5d846122b32ddaFBC1A9FeB801e0847`
 - nonce(number): `0x3c000000` => `'0x' + hex_format(scale_encode(60))`
 - digest(fixed-size bytes): `0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb` => `'0x' + hex_format(blake2_256(data)) // for fixed-size bytes array, the encoding result is same as the original data, so we just omit the scale_encode`
 - command(custom structure): `0x6780906036a0737931bc14669b077ae9b5f0e053995f1f3e84ade4200ebbf309d3469ea947e82ba420d74c97a7606cb0485ab85e192dc0cdc56dbebc215439892a6696b5aa9082e195dc8fd9e93e8f1d` => `0x + hex_format(scale_encode(structure_data))`
 - trading_pair(tuple): `0x0000000001000000` => `'0x' + hex_format(scale_encode([0, 1]))`
+
+### H160 Mapping Address
+
+Fusotao uses sr25519 pubkey to represent user account, but still supports secp256k1 signature and H160 address. 
+// TODO derive mapping address
 
 ### Low-level On-chain Storage API 
 
@@ -159,14 +162,12 @@ The open trading API is not a part of the runtime layer.
 
 | Method                      | Parameters                                                    | Description                                     |
 |-----------------------------|---------------------------------------------------------------|-------------------------------------------------|
-| `broker_trade`              | `[prover_account, cmd, digest, nonce]`                        | Place an order or cancel an order               |
+| `broker_trade`              | `[prover_account, user_account, cmd, digest, nonce]`                        | Place an order or cancel an order               |
 | `broker_queryPendingOrders` | `[prover_account, user_account, trading_pair, digest, nonce]` | Query all pending orders of a trading pair      |
 | `broker_queryAccount`       | `[prover_account, user_account, digest, nonce]`               | Query account balances authorized to the prover |
 | `broker_registerTradingKey` | `[prover_account, user_account, x25519_pubkey, signature]`    | Register a trading key for the current user     |
 | `broker_getNonce`           | `[prover_account, user_account]`                              | Retrieve the nonce of the current user          |
 | `broker_subscribeTrading`   | `[prover_account, user_account, digest, nonce]`               | Subscribe the order change events.              |
-
-TODO
 
 1. **Include broker nodes in your program**
 
@@ -201,6 +202,8 @@ To let the prover knows that the trading key is generated from the account, the 
 ```
 var user_x25519_pubkey = user_prikey.pubkey();
 var signature = user_sr25519_key.sign(user_x25519_pubkey);
+// or use secp256k1 (NOTICE: we follow the Ethereum `personal_sign` spec, an extra prefix must be included in the signing message, please refer to [Metamask docs](https://github.com/ethereum/go-ethereum/pull/2940))
+var signature = user_secp256k1_key.personal_sign();
 ```
 Send the `broker_registerTradingKey`, if everything goes well, a `nonce` in scale codec with hex format will be replied:
 ```
@@ -223,7 +226,37 @@ var digest = blake2b_256([], trading_key, nonce);
 // broker_queryPendingOrders:
 var digest = blake2b_256(trading_pair, trading_key, nonce);
 ```
-After a request sent, the nonce should be increased by 1.
+The `broker_trade` contains a complex data type parameter which should be encoded:
+```
+#[serde(rename_all = "camelCase")]
+pub enum TradingCommand {
+    Ask {
+        base: u32, // currency id of the base currency
+        quote: u32, // currency id of the quote currency
+        amount: String, // decimal of the amount, e.g. "0.258"
+        price: String, // decimal of the price, e.g. "3.141592"
+    },
+    Bid {
+        base: u32,
+        quote: u32,
+        amount: String,
+        price: String,
+    },
+    Cancel {
+        base: u32,
+        quote: u32,
+        order_id: u64,
+    },
+}
+```
+For some languages don't have tuple type, the parameter can be encoded equally:
+```
+Ask: '0x00' + encode(u32) + encode(u32) + encode(String) + encode(String)
+Bid: '0x01' + encode(u32) + encode(u32) + encode(String) + encode(String)
+Cancel: '0x02' + encode(u32) + encode(u32) + encode(u64)
+```
+
+Everytime a request sent, no matter it succeed or failed, the nonce should be increased by 1.
 
 NOTE: all the parameters of blake2b hash function should be scale-encoded.
 
