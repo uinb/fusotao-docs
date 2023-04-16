@@ -51,9 +51,65 @@ nohup ./fuso --chain octopus-mainnet \
 
 ```
 
-### Running Fusotao as a broker
+### Running Fusotao as a broker($TAO staking is needed)
 
-TODO
+1. Generating an address:
+
+```
+./fuso key generate --scheme sr25519
+
+```
+It will output a ss58 address with secret phrase:
+```
+Secret phrase:       save consider title mechanic rent august clock clog alcohol journey online radar
+  Secret seed:       0xcd53583ccdd18535037d6a6e2013c9953d6474b517d7b04a042f4e0990f66fe4
+  Public key (hex):  0xa8ba5c697e0ce46b679821200ed0ecf257069baab8d60576c18f840f0b548b24
+  Account ID:        0xa8ba5c697e0ce46b679821200ed0ecf257069baab8d60576c18f840f0b548b24
+  Public key (SS58): 5FswGBXbdfe1jNEvZsMvKZn5pSHD8RNcTfa3kwtaqDo9oj7p
+  SS58 Address:      5FswGBXbdfe1jNEvZsMvKZn5pSHD8RNcTfa3kwtaqDo9oj7p
+```
+
+2. Launch Fusotao node in relayer mode: (the `--rpc-methods safe` must be annodated):
+
+```
+nohup ./fuso --chain octopus-mainnet \
+             --ws-external \
+             --rpc-external \
+             --rpc-cors all \
+             --rpc-methods safe \
+             --telemetry-url "wss://telemetry.mainnet.octopus.network/submit 0" \
+             --prometheus-external \
+             --prometheus-port 9615 \
+             --enable-offchain-indexing true \
+             --base-path /path/to/datastore \
+             --name "name you prefer" \
+             --ws-max-connections 10000 \
+             --relayer > /path/to/fusotao.out & 2>&1
+
+```
+
+3. Insert the key just generated into the node:
+
+```
+./fuso key insert --key-type rely --scheme sr25519 --chain octopus-mainnet
+```
+Paste the `Secret phrase` rather than `Secret seed`.
+
+4. Register the key:
+
+The simplest way is to use the [RPC Endpoint](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fgateway.mainnet.octopus.network%2Ffusotao%2F0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/extrinsics).
+
+![](/register-broker.png)
+
+You should use the key generated in the 1st step as the signer by importing the secret phrase into [Polkadotjs Wallet](https://polkadot.js.org/extension/). 
+
+- `beneficiary`: The beneficiary account to receive transaction fees. (We recommend to generate another account)
+- `rpcEndpoint`: The exposed websocket address. You may need to run a gateway in front of the broker node since it requires TLS. e.g. `wss://abc.example.com`
+- `name`: Any name you prefer.
+
+NOTICE: This step needs 50,000 $TAO in the signer account.
+
+After that, your node will be visible in the network. You could customized your own webapp and indicates your node.
 
 ## RPC
 
@@ -83,6 +139,7 @@ Below are some examples:
 ### H160 Mapping Address
 
 Fusotao uses sr25519 pubkey to represent user account, but still supports secp256k1 signature and H160 address. 
+
 // TODO derive mapping address
 
 ### Low-level On-chain Storage API 
