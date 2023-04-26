@@ -217,14 +217,14 @@ TODO
 
 The open trading API is not a part of the runtime layer.
 
-| Method                      | Parameters                                                    | Description                                     |
-|-----------------------------|---------------------------------------------------------------|-------------------------------------------------|
-| `broker_trade`              | `[prover_account, user_account, cmd, digest, nonce]`                        | Place an order or cancel an order               |
+| Method                      | Parameters                                                        | Description                                     |
+|-----------------------------|-------------------------------------------------------------------|-------------------------------------------------|
+| `broker_trade`              | `[prover_account, user_account, cmd, digest, nonce]`        | Place an order or cancel an order               |
 | `broker_queryPendingOrders` | `[prover_account, user_account, trading_pair, digest, nonce]` | Query all pending orders of a trading pair      |
-| `broker_queryAccount`       | `[prover_account, user_account, digest, nonce]`               | Query account balances authorized to the prover |
-| `broker_registerTradingKey` | `[prover_account, user_account, x25519_pubkey, signature]`    | Register a trading key for the current user     |
-| `broker_getNonce`           | `[prover_account, user_account]`                              | Retrieve the nonce of the current user          |
-| `broker_subscribeTrading`   | `[prover_account, user_account, digest, nonce]`               | Subscribe the order change events.              |
+| `broker_queryAccount`       | `[prover_account, user_account, digest, nonce]`           | Query account balances authorized to the prover |
+| `broker_registerTradingKey` | `[prover_account, user_account, x25519_pubkey, signature]` | Register a trading key for the current user     |
+| `broker_getNonce`           | `[prover_account, user_account]`                                  | Retrieve the nonce of the current user          |
+| `broker_subscribeTrading`   | `[prover_account, user_account, digest, nonce]`                   | Subscribe the order change events.              |
 
 1. **Include broker nodes in your program**
 
@@ -260,11 +260,11 @@ To let the prover knows that the trading key is generated from the account, the 
 var user_x25519_pubkey = user_prikey.pubkey();
 var signature = user_sr25519_key.sign(user_x25519_pubkey);
 // or use secp256k1 (NOTICE: we follow the Ethereum `personal_sign` spec, an extra prefix must be included in the signing message, please refer to [Metamask docs](https://github.com/ethereum/go-ethereum/pull/2940))
-var signature = user_secp256k1_key.personal_sign();
+var signature = user_secp256k1_key.personal_sign(user_x25519_pubkey without 0x);
 ```
 Send the `broker_registerTradingKey`, if everything goes well, a `nonce` in scale codec with hex format will be replied:
 ```
-wscat -c wss://testnet-sidecar.fusotao.org
+wscat -c wss://broker-rpc.fusotao.org
 > {"id":"1","jsonrpc":"2.0","method":"broker_registerTradingKey","params":["5GxCNDyhqv2hx2zcQfse58vLWcueJKMjXPTgzcJbi9khtNrf","5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty","0xa0c867a0915cb07fb3d38ddd929fbe683f93b8337f980fa4fa83728c36fa615a","0x2e695451a138f5d395ea1743618cd7aa30e91f47980d9afcbe18535ad4e9d53914e306121e074767067b2a199964616a969ddf930726ff2440fd0a3b3235ed85"]}
 < {"jsonrpc":"2.0","result":"0x651d0000","id":"1"}
 ```
@@ -308,9 +308,9 @@ pub enum TradingCommand {
 ```
 For some languages don't have tuple type, the parameter can be encoded equally:
 ```
-Ask: '0x00' + encode(u32) + encode(u32) + encode(String) + encode(String)
-Bid: '0x01' + encode(u32) + encode(u32) + encode(String) + encode(String)
-Cancel: '0x02' + encode(u32) + encode(u32) + encode(u64)
+Ask: '0x00' + scale-encode(u32) + scale-encode(u32) + scale-encode(String) + scale-encode(String)
+Bid: '0x01' + scale-encode(u32) + scale-encode(u32) + scale-encode(String) + scale-encode(String)
+Cancel: '0x02' + scale-encode(u32) + scale-encode(u32) + scale-encode(u64)
 ```
 
 Everytime a request sent, no matter it succeed or failed, the nonce should be increased by 1.
@@ -328,7 +328,7 @@ pub struct Order {
     create_timestamp: u64,
     amount: String,
     price: String,
-    status: u8,
+    status: u16,
     matched_quote_amount: String,
     matched_base_amount: String,
     base_fee: String,
@@ -490,7 +490,7 @@ The final step of registering a DEX is to make a PR to our [Github Repo](https:/
   "fxdx": {
     "name": "fxdx",
     "website": "https://testnet.fxdx.finance",
-    "address": "5GxCNDyhqv2hx2zcQfse58vLWcueJKMjXPTgzcJbi9khtNrf",
+    "address": "5GxCNDyhqv2hx2zcQfse58vLWcueJKMjXPTgzcJbi9khtNrf",status
     "logo": "https://testnet.fxdx.finance/fxdx.png"
   }
   // add your information here
