@@ -1,11 +1,11 @@
-# Architecture
+# Overview
 
 
 This chapter describes the top-level architecture of Fusotao, explaining each components and their interactions.
 
 The following figure indicates the interaction between Fusotao components and other chains:
 
-![](/FusotaoOverview.png)
+![](/FusotaoOverview.png ':size=75%')
 
 ## Components
 

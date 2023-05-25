@@ -1,12 +1,33 @@
-# Development
+# Developer Guides
 
-## Installing the Fusotao Node
+Fusotao protocol is developed on Substrate. Unlike smart contract VM, changes to the protocol must be made through forkless network upgrades based on consensus. 
+This chapter will mainly introduce how to integrate or develop based on the Fusotao protocol. If you want to contribute to the Fusotao functionality itself, please refer to the contribution guide in the [GitHub repository](https://github.com/uinb/fusotao).
 
-### Downloading pre-compiled executables(Linux only)
+## Node
 
-The pre-compiled executable can be downloaded from our [Fusotao Releases](https://github.com/uinb/fusotao/releases) page.
+### Submitting transactions
 
-### Building from source
+The easiest way to submit a transaction is through the [Polkadotjs App](https://polkadot.js.org/apps). This is online webapp for all substrate-based blockchains. On the left-upper corner, you need to specify a node endpoint to connect from which the webapp will automatically fetch the data.
+
+We use the `transfer` as an example:
+
+1. Click the `Developer` tab and select `Extrinsics`
+2. In the first item, select the signer account which can be either inserted through the `Accounts` tab or injected from the [Polkadot Extension](https://polkadot.js.org/extension/)
+3. From the module list, select `balances` which represents the native assets module, and on the right side, select `transfer` function.
+4. The webapp will automatically render the parameters according to the chain runtime, in this scenario, they are `dest` and `value`. 
+5. Clicking `Submit Transaction` will awake the extension and requires you to sign the transaction.
+
+> Fusotao follows the tradition of bitcoin to use u128 to represent `value`. That means, if you want to transfer `1 TAO`, you need to input `1_000_000_000_000_000_000`.
+
+![](/submit-trans.png)
+
+### Querying runtime state
+
+TODO
+
+### Installing node
+
+A typical blockchain network is always composed of nodes. The pre-compiled linux executable can be downloaded from [Fusotao Releases](https://github.com/uinb/fusotao/releases) page.
 
 If you prefer to build Fusotao node from source, please prepare the [Rustup](https://rustup.rs/) toolchain and clone the [Github Repo](https://github.com/uinb/fusotao).
 
@@ -15,26 +36,31 @@ If you prefer to build Fusotao node from source, please prepare the [Rustup](htt
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 git clone https://github.com/uinb/fusotao.git
 # checkout the recent release tag, e.g. v0.9.18-rum.11
-cd fusotao && git checkout v0.9.18-rum.11
+cd fusotao && git checkout ${git.tag} 
 cargo build --release
 
 ```
 
-**NOTICE:** Make sure you have switched to the recent release tag if you plan to join the mainnet.
+> Make sure you have switched to the recent release tag if you plan to join the mainnet.
 
-### Running Fusotao in dev mode
+The nodes in the Fusotao network have different roles:
 
-To test Fusotao in local, simply start the node in dev mode:
-```
-target/release/fuso --dev
-
-```
+| role      | option      | staking |
+|-----------|-------------|---------|
+| rpc       | n/a         | n/a     |
+| validator | --validator | $OCT    |
+| broker    | --relayer   | $TAO    |
 
 ### Running Fusotao as a validator
 
-Unlike the PoW network, most PoS blockchains need value staking to secure the network and keep it permissionless at the same time. Before running Fusotao node as a validator, operators need to complete a few steps and stake some $OCT tokens in the Anchor contract, please follow the [Octopus Docs](https://docs.oct.network/maintain/validator-guide.html#validator-guide).
+Unlike the PoW network, most PoS blockchains need value staking to secure the network and keep it permissionless at the same time. Before running Fusotao node as a validator, operators need to complete a few steps and stake some $OCT tokens into the Anchor contract, please follow the [Octopus Docs](https://docs.oct.network/maintain/validator-guide.html#validator-guide).
 
-Then back to the server and input(replace some parameters to adapt to your environment):
+This seems a little bit weird for a blockchain network, why another token is needed to run a validator for Fusotao network? And what is this $OCT token? Well, there are already a plenty of articles to introduce what Octopus Network is, here we'll simply explain why Octopus Network is important to Fusotao Protocol.
+
+The power of a blockchain network is from its decentralization, but establishing a new decentralized network is hard, especially at the early stage. When a new decentralized network is created, it starts with a small network size and requires time to grow. As a result, it is vulnerable to attacks (in the BABE/GRANDPA consensus algorithm, controlling 2/3 of the consensus nodes can illegally tamper with data). Octopus Network is an infrastructure that ensures the security of a new blockchain network. With the help of a mature community and OCT holders, it can quickly assist a newly created decentralized protocol in establishing a network with dozens of nodes.
+
+
+Once completed the steps of staking $OCT, launching the node is very easy(replace some parameters to adapt to your environment):
 
 ```
 nohup ./fuso --chain octopus-mainnet \
@@ -45,15 +71,17 @@ nohup ./fuso --chain octopus-mainnet \
              --prometheus-external \
              --prometheus-port 9615 \
              --enable-offchain-indexing true \
-             --base-path /path/to/datastore \
-             --name "name you prefer" \
+             --base-path {/path/to/datastore} \
+             --name "{name you prefer}" \
              --validator > /path/to/fusotao.out & 2>&1
 
 ```
 
-### Running Fusotao as a broker($TAO staking is needed)
+### Running Fusotao as a broker
 
-1. Generating an address:
+As a decentralized trading network, the nodes have ability to accept trading commands but it requires the node is launched is the broker mode.
+
+1. Generate an address for the broker node:
 
 ```
 ./fuso key generate --scheme sr25519
@@ -69,7 +97,7 @@ Secret phrase:       save consider title mechanic rent august clock clog alcohol
   SS58 Address:      5FswGBXbdfe1jNEvZsMvKZn5pSHD8RNcTfa3kwtaqDo9oj7p
 ```
 
-2. Launch Fusotao node in relayer mode: (the `--rpc-methods safe` must be annodated):
+2. Launch the node in broker mode: (the `--rpc-methods safe` must be annotated):
 
 ```
 nohup ./fuso --chain octopus-mainnet \
@@ -81,8 +109,8 @@ nohup ./fuso --chain octopus-mainnet \
              --prometheus-external \
              --prometheus-port 9615 \
              --enable-offchain-indexing true \
-             --base-path /path/to/datastore \
-             --name "name you prefer" \
+             --base-path {/path/to/datastore} \
+             --name "{name you prefer}" \
              --ws-max-connections 10000 \
              --relayer > /path/to/fusotao.out & 2>&1
 
@@ -93,56 +121,75 @@ nohup ./fuso --chain octopus-mainnet \
 ```
 ./fuso key insert --key-type rely --scheme sr25519 --chain octopus-mainnet
 ```
-Paste the `Secret phrase` rather than `Secret seed`.
+That will ask you to input the `Secret phrase`.
 
-4. Register the key:
+4. Register the broker account:
 
-The simplest way is to use the [RPC Endpoint](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fgateway.mainnet.octopus.network%2Ffusotao%2F0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/extrinsics).
+You need to use another account as the beneficiary and stake 50,000 TAO to activate the broker.
+
+The simplest way is to use the [RPC Endpoint](https://polkadot.js.org/apps/?rpc=wss%3A%2F%2Fgateway.mainnet.octopus.network%2Ffusotao%2F0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/extrinsics) like previous section.
 
 ![](/register-broker.png)
 
-You should use the key generated in the 1st step as the signer by importing the secret phrase into [Polkadotjs Wallet](https://polkadot.js.org/extension/). 
-
-- `beneficiary`: The beneficiary account to receive transaction fees. (We recommend to generate another account)
-- `rpcEndpoint`: The exposed websocket address. You may need to run a gateway in front of the broker node since it requires TLS. e.g. `wss://abc.example.com`
+- `broker`: The address just generated in the 1st step.
+- `rpcEndpoint`: The exposed websocket address. You may need to run a gateway in front of the broker node since it requires TLS.
 - `name`: Any name you prefer.
 
-NOTICE: This step needs 50,000 $TAO in the signer account.
-
-After that, your node will be visible in the network. You could customized your own webapp and indicates your node.
+> After that, your broker node will be visible in the network. Even you could build a customized webapp with non-custody trading features.
 
 ## RPC
 
-RPC is the direct way to interact with Fusotao, following the [JSON-RPC 2.0](https://jsonrpc.org) standard. Fusotao supports both HTTP and WebSocket protocols. Similar to the web3.js library for Ethereum-based chains, Fusotao is a Substrate-based chain and has a Polkadot.js library that encapsulates the low-level JSON-RPC and encoding/decoding.
+RPC is the direct way to interact with Fusotao, following the [JSON-RPC 2.0](https://jsonrpc.org) standard. Fusotao supports both HTTP and WebSocket as the trasport layer. 
 
-Fusotao's RPC can be divided into two categories:
+Similar to the web3.js library for Ethereum-based chains, there is a polkadot.js library that encapsulates the low-level JSON-RPC and encoding/decoding for Substrate-based chains.
 
-**Runtime API**: requests go into the consensus part of the chain, such as reading on-chain storage or sending signed transactions.
+### Account
 
-**Node API**: requests do not execute inside the runtime, such as the Open Trading API.
+An account in Fusotao network represents an identity of a person or an organization that is capable of making transactions or holding funds. For that, it doesn't have to be a cryptographical public key.
 
-This section will provide a detailed introduction to the second type of API. For the first type, only on-chain storage related to the Open Trading API will be discussed. For other APIs, please refer to the Polkadot.js documentation.
+By default, a Sr25519 public key can be represented as an account since the associated private key could be used to sign a transaction. 
+Some other account types that are not public keys:
+
+- System account
+
+The system accounts are usually used for locking funds but their private keys are not existed. For example, the octopus bridge module uses an account without private key to receive $TAO then mint equally amount on NEAR. An system account is usually generated by a specific content with hash functions which emit a 32-bytes array.
+
+- Mapping Account
+
+A mapping account represents an identity from outer chains, currently only EVM-compatible chains. It requires that the account owner owns the secp256k1 private key to make transactions.
+
+- Multi-signature Account
+
+The Multisig pallet enables multiple parties to share responsibility for executing certain transactions. Any account holder can specify the accounts that are allowed to approve a multi-signature transaction and the minimum number of approvals required for a call to be dispatched to the runtime.
+ 
 
 ### Codec 
 
-All types in the **Open Trading API** are [parity-scale-codec](https://github.com/paritytech/parity-scale-codec) and represented in hex format with "0x" prefix, except the `AccountId`. The `AccountId` must be represented in [ss58 format](https://ss58.org/) when using sr25519(default Fusotao account type), or hex format when using secp256k1 pubkey(compatible with Ethereum).
+All data types in the runtime are encoded in [SCALE Codec](https://github.com/paritytech/parity-scale-codec), which is designed for communication between runtime and the outer space. For example, the signed transactions, parameters of a query request and its response data are all SCALE encoded. 
 
-Below are some examples:
+The SCALE codec is in form of binary format and not self-describing in any way. It assumes the decoding context has all type information about the encoded data. If a type is defined in the runtime, the client library could automatically register the type according to the runtime metadata. In the previous section, the polkadotjs webapp just uses the runtime metadata fetched from the connected node to render the parameters of the transaction call.
 
-- user_account(fuso address): `5CGGzMEAVRwvBAr15c9c6c9N3LNKY3u3DmtJRpJHsWgSz4ii`
-- user_account(eth/bsc address): `0x3bAD6205d5d846122b32ddaFBC1A9FeB801e0847`
-- nonce(number): `0x3c000000` => `'0x' + hex_format(scale_encode(60))`
-- digest(fixed-size bytes): `0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb` => `'0x' + hex_format(blake2_256(data)) // for fixed-size bytes array, the encoding result is same as the original data, so we just omit the scale_encode`
-- command(custom structure): `0x6780906036a0737931bc14669b077ae9b5f0e053995f1f3e84ade4200ebbf309d3469ea947e82ba420d74c97a7606cb0485ab85e192dc0cdc56dbebc215439892a6696b5aa9082e195dc8fd9e93e8f1d` => `0x + hex_format(scale_encode(structure_data))`
-- trading_pair(tuple): `0x0000000001000000` => `'0x' + hex_format(scale_encode([0, 1]))`
+### Tutorials of the low-level Runtime API 
 
-### H160 Mapping Address
+Since JSON-RPC is the way to interact with Fusotao node, while SCALE Codec is a kind of binary format, the encoded data is usually represented in the form of literal string with hex format. Below are some examples:
 
-Fusotao uses sr25519 pubkey to represent user account, but still supports secp256k1 signature and H160 address. 
+```
+// number
+60 => '0x' + hex(scale_encode(60)) => 0x3c000000
 
-// TODO derive mapping address
+// fixed-size bytes
+0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb => 0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb
 
-### Low-level On-chain Storage API 
+// object
+{
+    i: 60,
+    g: 'abcd'
+}
+=> '0x' + hex(scale_encode(60)) + hex(scale_encode('abcd')) => 0x3c0000000461626364
+
+// tuple
+[1, 2] => '0x' + hex(scale_encode([1, 2])) => 0x0100000002000000 
+```
 
 To use the low-level JSON-RPC to access the on-chain storage, users need to calculate the `StorageKey` then send a request. The `StorageKey` is concated with 3 parts: `twox128(module_name) + twox128(storage_name) + storage_hasher(key)`. The first two parts consist the `StoragePrefix` while the last part depends on the definition of the storage in the runtime. For instance, the `Broker` storage is defined at `market` module of the runtime:
 
@@ -198,7 +245,7 @@ pub struct Broker<AccountId, Balance, BlockNumber> {
 ```
 We need to define a struct which has a same codec structure with the definition, for Rust, we could simply copy the definition and replace the generic type with `AccountId32`, `u128` and `u32`.
 
-Sometime we don't know any `Broker` accounts and would like to fetch all the brokers just like iterate all the keys over a HashMap. Substrate provides a `state_getKeysPaged` rpc to do that. Back to the step of calulating `StoragePrefix`, we could directly get all the keys start with the prefix:
+Sometime we don't know any `Broker` accounts and would like to fetch all the brokers just like iterate all the keys over a HashMap. There is a `state_getKeysPaged` rpc method to do that. Back to the step of calulating `StoragePrefix`, we could directly get all the keys start with the prefix:
 ```
 wscat -c wss://gateway.testnet.octopus.network/fusotao/erc8ygm5qvmi2fw23ijpvzgpzzto47mi
 > {"id":262,"jsonrpc":"2.0","method":"state_getKeysPaged","params":["0x5ebf094108ead4fefa73f7a3b13cb4a7379c21ecab4e77259ea5abd8011f197f",1000,"0x5ebf094108ead4fefa73f7a3b13cb4a7379c21ecab4e77259ea5abd8011f197f"]}
@@ -207,9 +254,9 @@ wscat -c wss://gateway.testnet.octopus.network/fusotao/erc8ygm5qvmi2fw23ijpvzgpz
 
 The low-level JSON-RPC is powerful enough but not very convenient to use. Luckily, the [Polkadotjs](https://polkadot.js.org/docs/substrate/storage) provides a easy way to access the on-chain storage. 
 
-NOTICE: the polkadotjs uses dynamic code generation according to the runtime metadata to encapsulate the JSON-RPC and expose via `api.query.<module>.<method>`. Some modules in the docs are not included in Fusotao runtime while some modules in Fusotao runtime are not shown in the docs, but developers still could access all the Fusotao storage via Polkadotjs. For all modules of Fusotao runtime, please refer to the [Fusotao Runtime Modules](/fusotao-runtime-modules) or check the online [RPC endpoint](https://polkadot.js.org/apps/?rpc=wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/explorer).
+> NOTICE: the polkadotjs uses dynamic code generation according to the runtime metadata to encapsulate the JSON-RPC and expose via `api.query.<module>.<method>`. Some modules in the docs are not included in Fusotao runtime while some modules in Fusotao runtime are not shown in the docs, but developers still could access all the Fusotao storage via Polkadotjs. For all modules of Fusotao runtime, please refer to the [Runtime API specs](#runtime-api-specs) or check the online [RPC endpoint](https://polkadot.js.org/apps/?rpc=wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/explorer).
 
-### Transaction
+### Runtime API specs
 
 TODO
 
@@ -217,14 +264,14 @@ TODO
 
 The open trading API is not a part of the runtime layer.
 
-| Method                      | Parameters                                                        | Description                                     |
-|-----------------------------|-------------------------------------------------------------------|-------------------------------------------------|
-| `broker_trade`              | `[prover_account, user_account, cmd, digest, nonce]`        | Place an order or cancel an order               |
-| `broker_queryPendingOrders` | `[prover_account, user_account, trading_pair, digest, nonce]` | Query all pending orders of a trading pair      |
-| `broker_queryAccount`       | `[prover_account, user_account, digest, nonce]`           | Query account balances authorized to the prover |
-| `broker_registerTradingKey` | `[prover_account, user_account, x25519_pubkey, signature]` | Register a trading key for the current user     |
-| `broker_getNonce`           | `[prover_account, user_account]`                                  | Retrieve the nonce of the current user          |
-| `broker_subscribeTrading`   | `[prover_account, user_account, digest, nonce]`                   | Subscribe the order change events.              |
+| Method                    | Parameters                                                  | Description                                     |
+|---------------------------|-------------------------------------------------------------|-------------------------------------------------|
+| broker_trade              | [prover_account, user_account, cmd, digest, nonce]          | Place an order or cancel an order               |
+| broker_queryPendingOrders | [prover_account, user_account, trading_pair, digest, nonce] | Query all pending orders of a trading pair      |
+| broker_queryAccount       | [prover_account, user_account, digest, nonce]               | Query account balances authorized to the prover |
+| broker_registerTradingKey | [prover_account, user_account, x25519_pubkey, signature]    | Register a trading key for the current user     |
+| broker_getNonce           | [prover_account, user_account]                              | Retrieve the nonce of the current user          |
+| broker_subscribeTrading   | [prover_account, user_account, digest, nonce]               | Subscribe the order change events.              |
 
 1. **Include broker nodes in your program**
 
@@ -269,8 +316,6 @@ wscat -c wss://broker-rpc.fusotao.org
 < {"jsonrpc":"2.0","result":"0x651d0000","id":"1"}
 ```
 
-TODO 
-
 6. **Request**
 
 The `broker_trade`, `broker_queryPendingOrders`, `broker_queryAccount`, `broker_subscribeTrading` requests must contain a `blake2b_256` digest and the nonce:
@@ -313,9 +358,7 @@ Bid: '0x01' + scale-encode(u32) + scale-encode(u32) + scale-encode(String) + sca
 Cancel: '0x02' + scale-encode(u32) + scale-encode(u32) + scale-encode(u64)
 ```
 
-Everytime a request sent, no matter it succeed or failed, the nonce should be increased by 1.
-
-NOTE: all the parameters of blake2b hash function should be scale-encoded.
+> Everytime a request sent, no matter it succeed or failed, the nonce should be increased by 1.
 
 7. **Response**
 
@@ -464,8 +507,8 @@ Now Galois is waiting for the incoming commands.
 
 ### Registering the prover
 
-In the #[Configurations](#Configurations) section, we have filled the `key_seed` with the well-known `Alice`. Beyond the test, we should generate a real private key and register the address on Fusotao chain to enable submitting proofs.    
-The easiest way to generate a private key is to use the #[subkey](https://github.com/paritytech/subkey) tool developed by the Parity team:
+In the [Configurations](#Configurations) section, we have filled the `key_seed` with the well-known `Alice`. Beyond the test, we should generate a real private key and register the address on Fusotao chain to enable submitting proofs.    
+The easiest way to generate a private key is to use the [subkey](https://github.com/paritytech/subkey) tool developed by the Parity team:
 
 ```
 $subkey generate
@@ -482,7 +525,6 @@ The registry procedure is an on-chain transaction. To submit the extrinsic, you 
 Then, import the menomnic phrase into Polkadotjs or Avatar wallet and submit the extrinsic on [Fusotao Mainnet RPC Endpoint](https://polkadot.js.org/apps/?rpc=wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2#/explorer)(Click the left upper corner to switch to your local node if you are testing).
 In the page, select `verifier`, `register`, and input the dex's name you like, then click 'Submit Extrinsic'.
 
-![](/register-dex.png)
 The final step of registering a DEX is to make a PR to our [Github Repo](https://github.com/uinb/fusotao-registry) where to save dex's name, logo and url:
 
 ```
@@ -528,7 +570,3 @@ to create a new table.
 ```insert into t_sequence(f_cmd) values('{"base":0,"quote":1,"base_scale":2,"quote_scale":4,"taker_fee":"0.002","maker_fee":"0.002","min_amount":"0.1","min_vol":"10","enable_market_order":false,"open":true,"cmd":13}');```
 
 For more details of the commands, please refer to the [README](https://github.com/uinb/galois).
-
-### Testnet
-
-TODO
