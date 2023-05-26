@@ -39,7 +39,7 @@ While the runtime indicates the business logic of this protocol. Specifically, t
 
 An account in Fusotao network represents an identity of a person or an organization that is capable of making transactions or holding funds. 
 Fusotao uses Sr25519 as its cryptography signature by default. Thus, a Sr25519 public key can be represented as an account since the associated private key could be used to sign a transaction. 
-But an account doesn't have to be a cryptographical public key. In fact, any 32-bytes array could be treat as accounts.
+But an account doesn't have to be a cryptographical public key. In fact, any 32-bytes array could be treat as an account.
 
 Some other account types that are not public keys:
 
