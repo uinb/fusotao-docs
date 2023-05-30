@@ -1,0 +1,67 @@
+/* $--color-primary: #20BFA9;
+$--color-success: #20BFA9;
+$--color-danger: #EC2D49;
+$--color-warning: #F2994A;
+$--color-white:#FFFFFF;
+$--color-black:#000000;
+$--color-text-light: #FFF;
+$--border-color-base: #24273E;
+$--border-color-light: #24273E;
+$--border-color-lighter: #24273E;
+$--border-color-extra-light: #24273E;
+$--color-info: #222538;
+$--color-buy: #20BFA9;
+$--color-sell: #EC2D49;
+$-color-border:#807E98;
+$--color-text-regular: #FFFFFF;
+$--color-text-secondary:#969696;
+$--color-text-placeholder:#404044;
+$--color-button-text:#fff;
+$--color-text-primary-light: #FFF;
+$--color-text-primary: #CFCFD2;
+$--color-text-mini-title:#969696;
+$--background-color-base: #11121D;
+$--background-color-card: #23242F;
+$--background-color-market: #151824;
+$--background-color-popper: #292c41;
+$--background-color-awatar-item:#222538;
+$-background-color-progress:#323442;
+$--background-color-disabled:rgba(32, 191, 169, 0.5);
+$--color-divider: #24273E;
+*/
+
+
+/* App
+============================================================================= */
+:root {
+  --base-background-color: #11121D;
+  --selection-color      : #151824;
+  --theme-color: #20BFA9
+}
+
+.sidebar, body{
+  background-color: #11121D;
+  font-family: "Montserrat", "Open_Sans";
+  color: #CFCFD2
+}
+
+.sidebar{
+  border: 1px solid #24273E;
+  width: 260px;
+}
+
+.anchor span{
+  color: #FFF;
+}
+.markdown-section{
+  padding: 30px 15px 40px;
+  max-width: auto;
+}
+
+.sidebar-toggle{
+  background-color: transparent !important;
+}
+
+.content{
+  left: 260px;
+}
