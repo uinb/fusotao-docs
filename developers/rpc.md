@@ -4,7 +4,7 @@ RPC is the direct way to interact with Fusotao, following the [JSON-RPC 2.0](htt
 
 Similar to the web3.js library for Ethereum-based chains, there is a polkadot.js library that encapsulates the low-level JSON-RPC and encoding/decoding for Substrate-based chains.
 
-## Tutorials of the low-level Runtime API 
+## Runtime API tutorials
 
 Since JSON-RPC is the way to interact with Fusotao node, while SCALE Codec is a kind of binary format, the encoded data is usually represented in the form of literal string with hex format. Below are some examples:
 

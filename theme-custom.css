@@ -41,14 +41,13 @@ $--color-divider: #24273E;
 
 .sidebar, body {
   background-color: #294052;
-  font-family: "Space Mono", "Open Sans";
-  font-size: 18px;
+  font-family: "Space Mono";
+  font-size: 17px;
   color: #CFCFD2
 }
 
 .sidebar {
   border: 1px solid #24273E;
-  width: 300px;
   font-size: 20px;
 }
 
@@ -59,6 +58,7 @@ $--color-divider: #24273E;
 .anchor span {
   color: #FFF;
 }
+
 .markdown-section{
   padding: 30px 15px 40px;
   max-width: auto;
@@ -74,7 +74,6 @@ $--color-divider: #24273E;
 
 .markdown-section tr:nth-child(2n) {
   background-color: transparent !important;
-    /* background-color: #f8f8f8; */
 }
 
 .markdown-section pre {

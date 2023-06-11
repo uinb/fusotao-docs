@@ -1,10 +1,20 @@
-# Basics
+# Learn
 
-This chapter describes the top-level architecture of Fusotao, explaining each components and their interactions.
+This chapter describes the top-level architecture of Fusotao, explaining each components and their interactions. Many conceptions in Fusotao are inherited from Substrate which makes Fusotao becoming a blockchain.
+
+## Architecture
 
 The following figure indicates the interaction between Fusotao components and other chains:
 
 ![](/overview.png ':size=75%')
+
+Since Fusotao is not a general-purpose blockchain, the tokens usually are not originally from Fusotao. To trade them, they need to be bridged from external chains. 
+
+In fact, except NEP-141 tokens from NEAR protocol, people wouldn't aware the bridging progress. Since the main reason for bridging tokens to Fusotao is to trade them, Fusotao just combines the authorizing and bridging into a single transaction. People could just use Fusotao via popular wallets like metamask directly. That makes Fusotao just looks like a smart contract hosted on ETH and BSC.
+
+## Decentralized broker
+
+![](/network.webp ':size=75%')
 
 ## Runtime and container
 
@@ -30,6 +40,8 @@ While the runtime indicates the business logic of this protocol. Specifically, t
 - Agent: Enable interoperability with other EVM-compatible chains
 - Market: Managing the brokers and markets
 - Chainbridge: Bridging to EVM-compatible chains
+
+> You may want to check the [code](https://github.com/uinb/fusotao) here.
 
 ## Consensus
 
