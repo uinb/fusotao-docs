@@ -9,21 +9,17 @@ Similar to the web3.js library for Ethereum-based chains, there is a polkadot.js
 Since JSON-RPC is the way to interact with Fusotao node, while SCALE Codec is a kind of binary format, the encoded data is usually represented in the form of literal string with hex format. Below are some examples:
 
 ```
-// number
-60 => '0x' + hex(scale_encode(60)) => 0x3c000000
+60 // number
+=> '0x' + hex(scale_encode(60)) => 0x3c000000
 
-// fixed-size bytes
-0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb => 0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb
+0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb // fixed-size bytes
+=> 0x7ad7aa7004615afd22edc830a8a7ab26d5531e066d4f0e4da9c467598fc856eb
 
-// object
-{
-    i: 60,
-    g: 'abcd'
-}
+{ i: 60, g: 'abcd' } // object
 => '0x' + hex(scale_encode(60)) + hex(scale_encode('abcd')) => 0x3c0000000461626364
 
-// tuple
-[1, 2] => '0x' + hex(scale_encode([1, 2])) => 0x0100000002000000 
+[1, 2] // tuple
+=> '0x' + hex(scale_encode([1, 2])) => 0x0100000002000000 
 ```
 
 To use the low-level JSON-RPC to access the on-chain storage, users need to calculate the `StorageKey` then send a request. The `StorageKey` is concated with 3 parts: `twox128(module_name) + twox128(storage_name) + storage_hasher(key)`. The first two parts consist the `StoragePrefix` while the last part depends on the definition of the storage in the runtime. For instance, the `Broker` storage is defined at `market` module of the runtime:

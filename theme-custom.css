@@ -39,18 +39,24 @@ $--color-divider: #24273E;
   --theme-color: #20BFA9
 }
 
-.sidebar, body{
-  background-color: #11121D;
-  font-family: "Montserrat", "Open_Sans";
+.sidebar, body {
+  background-color: #294052;
+  font-family: "Space Mono", "Open Sans";
+  font-size: 18px;
   color: #CFCFD2
 }
 
-.sidebar{
+.sidebar {
   border: 1px solid #24273E;
-  width: 260px;
+  width: 300px;
+  font-size: 20px;
 }
 
-.anchor span{
+.sidebar ul li a {
+  font-size: 18px;
+}
+
+.anchor span {
   color: #FFF;
 }
 .markdown-section{
@@ -58,10 +64,28 @@ $--color-divider: #24273E;
   max-width: auto;
 }
 
-.sidebar-toggle{
+.sidebar-toggle {
   background-color: transparent !important;
 }
 
-.content{
+.content {
   left: 260px;
+}
+
+.markdown-section tr:nth-child(2n) {
+  background-color: transparent !important;
+    /* background-color: #f8f8f8; */
+}
+
+.markdown-section pre {
+  background-color: #fdfdfd;
+}
+
+.markdown-section pre>code {
+  background-color: inherit;
+}
+
+.markdown-section code {
+  background-color: inherit;
+  color: #ca3518;
 }

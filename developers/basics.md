@@ -33,7 +33,22 @@ While the runtime indicates the business logic of this protocol. Specifically, t
 
 ## Consensus
 
-> TODO
+Following the parity team's research, Fusotao re-uses the consensus algorithm which can be splitted into two separate phases:
+
+- Block producing is the process nodes use to create new blocks.
+- Block finalization is the process used to handle forks and choose the **canonical chain**.
+
+In a PoS system, time is divided up into discrete slots. During each slot only some of the validators are selected based on a verifiable random function (VRF) to produce a block. This mechanism is called BABE(Blind Assignment for Block Extension).
+
+A VRF can not promise that only a single validator would be selected during a slot. So, folks usually occur in the network.
+A fork choice rule is an algorithm that selects the best chain that should be extended. 
+
+Fusotao uses GRANDPA(GHOST-based Recursive Ancestor Deriving Prefix Agreement) to ensure the blocks in the canonical chain have deterministic finality. It just listens to gossip about blocks that have been produced by block authoring nodes. GRANDPA validators vote on chains, not blocks.
+GRANDPA participants, usually validators at same time, vote on a block that they consider best and their votes are applied transitively to all previous blocks. After two-thirds of the GRANDPA authorities have voted for a particular block, it is considered final.
+
+Read more: 
+
+> [Byzantine Fault](https://en.wikipedia.org/wiki/Byzantine_fault) and  [Reaching Agreement in the Presence of Faults](https://lamport.azurewebsites.net/pubs/reaching.pdf)
 
 ## Account
 
@@ -57,7 +72,37 @@ The Multisig pallet enables multiple parties to share responsibility for executi
 
 ## Address
 
-> TODO
+The address format in Fusotao network is SS58 which is based on the Bitcoin Base-58-check format with an extra modification.
+The basic format of the address can be described as:
+
+```
+base58encode ( concat ( 0x05, [account;32], [checksum]  )  )
+```
+
+To verify an address in JavaScript or TypeScript projects, you can use the functions built into the Polkadot-JS API. For example:
+
+```
+// Import Polkadot.js API dependencies.
+const { decodeAddress, encodeAddress  } = require('@polkadot/keyring')
+const { hexToU8a, isHex  } = require('@polkadot/util')
+
+// Specify an address to test.
+const address = '<addressToTest>'
+
+// Check address.
+const isValidSubstrateAddress = () => {
+  try {
+    encodeAddress(isHex(address) ? hexToU8a(address) : decodeAddress(address))
+    return true
+  } catch (error) {
+    return false
+  }
+}
+
+// Query result.
+const isValid = isValidSubstrateAddress()
+console.log(isValid)
+```
 
 ## Codec 
 
@@ -69,6 +114,11 @@ For example, the signed transactions, parameters of a query request and its resp
 ## Submitting transactions
 
 The easiest way to submit a transaction is through the [Polkadotjs App](https://polkadot.js.org/apps). This is online webapp for all substrate-based blockchains. On the left-upper corner, you need to specify a node endpoint to connect from which the webapp will automatically fetch the data.
+
+Some well-known endpoints are shown below:
+
+- `wss://gateway.mainnet.octopus.network/fusotao/0efwa9v0crdx4dg3uj8jdmc5y7dj4ir2`
+- `wss://broker-rpc.fusotao.org`
 
 We use the `transfer` as an example:
 
